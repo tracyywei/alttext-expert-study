@@ -6,6 +6,7 @@ import time
 import json
 import gspread
 from google.oauth2.service_account import Credentials
+import base64
 
 st.set_page_config(layout="wide")
 
@@ -21,7 +22,8 @@ st.write("The study will take approximately one hour and involve reviewing and r
 
 # Google Sheets authentication using Streamlit Secrets
 SHEET_NAME = "expert_responses"
-service_account_info = json.loads(st.secrets["GCP_SERVICE_ACCOUNT"])
+encoded_json = st.secrets["GCP_SERVICE_ACCOUNT_BASE64"]
+service_account_info = json.loads(base64.b64decode(encoded_json).decode())
 creds = Credentials.from_service_account_info(service_account_info, scopes=["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"])
 client = gspread.authorize(creds)
 sheet = client.open(SHEET_NAME).sheet1
