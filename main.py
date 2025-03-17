@@ -83,15 +83,12 @@ with col2:
     alt_text_labels = {variant[0]: variant[1] for variant in shuffled_variants}  # Store actual alt-text values
     
     selected_best = st.radio("Select the best alt-text option:", 
-                             options=[alt_text_labels[key] for key in alt_text_labels] + ["None"],
+                             options=[alt_text_labels[key].replace("Alt-text: ", "") for key in alt_text_labels] + ["None"],
                              index=None,
                              key=f"radio_{st.session_state.progress}")
     
-    reasoning_key = f"reasoning_{st.session_state.progress}"
-    comments_key = f"comments_{st.session_state.progress}"
-    
-    reasoning = st.text_area("Explain why you selected this option or why none is suitable:", height=100, key=reasoning_key)
-    overall_comments = st.text_area("Any additional overall comments about this image or alt-texts:", height=100, key=comments_key)
+    reasoning = st.text_area("Explain why you selected this option or why none is suitable:", height=100)
+    overall_comments = st.text_area("Any additional overall comments about this image or alt-texts:", height=100)
     
     if st.button("Next Image"):
         if selected_best:
@@ -113,13 +110,8 @@ with col2:
                     st.session_state.start_time
                 ])
                 
-                # Clear text inputs by resetting their keys
-                st.session_state[reasoning_key] = ""
-                st.session_state[comments_key] = ""
-                
-                # Ensure progress is updated before rerunning
                 st.session_state.progress += 1
-                st.experimental_rerun()
+                st.rerun()
         else:
             st.warning("Please select the best alt-text or 'None' before proceeding.")
 
