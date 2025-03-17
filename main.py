@@ -79,34 +79,29 @@ with col2:
     shuffled_variants = list(alt_text_variants.items())
     random.shuffle(shuffled_variants)
     
-    ratings = {}
-    reasonings = {}
-    for variant_name, alt_text in shuffled_variants:
-        alt_text = alt_text.replace("Alt-text: ", "")
-        st.write(f"{alt_text}")
-        ratings[variant_name] = st.slider(f"Rate this alt-text (1-5)", 1, 5, key=f"rating_{st.session_state.progress}_{variant_name}")
-        reasonings[variant_name] = st.text_area("Optional: Explain your rating", key=f"reasoning_{st.session_state.progress}_{variant_name}", height=75)
-        st.markdown("""
-        <div style='border-bottom: 2px solid #ccc; margin: 15px 0;'></div>
-        """, unsafe_allow_html=True)
+    selected_best = st.radio("Select the best alt-text option:", 
+                             options=[v[0] for v in shuffled_variants] + ["None"],
+                             index=None)
+    
+    reasoning = st.text_area("Explain why you selected this option or why none is suitable:", height=100)
+    overall_comments = st.text_area("Any additional overall comments about this image or alt-texts:", height=100)
     
     if st.button("Next Image"):
-        if any(ratings.values()):  # Ensure at least one rating is provided
-            for variant_name in ratings.keys():
-                sheet.append_row([
-                    participant_id,
-                    row["image_name"],
-                    variant_name,
-                    ratings[variant_name],
-                    reasonings[variant_name],
-                    time.time(),
-                    st.session_state.progress + 1,
-                    st.session_state.start_time
-                ])
+        if selected_best:
+            sheet.append_row([
+                participant_id,
+                row["image_name"],
+                selected_best,
+                reasoning,
+                overall_comments,
+                time.time(),
+                st.session_state.progress + 1,
+                st.session_state.start_time
+            ])
             
             st.session_state.progress += 1
             st.rerun()
         else:
-            st.warning("Please provide at least one rating before proceeding.")
+            st.warning("Please select the best alt-text or 'None' before proceeding.")
 
 st.write("Note: Closing this window will cause you to lose your progress.")
