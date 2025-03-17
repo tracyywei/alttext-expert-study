@@ -67,7 +67,7 @@ col1, spacer, col2 = st.columns([2, 0.2, 2])
 with col1:
     st.write(f"**Article Title:** {row['article_title']}")
     st.write(f"**Context:** {row['context']}")
-    st.image(row["image_url"], use_column_width=True)
+    st.image(row["image_url"], use_container_width=True)
 
 with col2:
     alt_text_variants = {
@@ -76,7 +76,7 @@ with col2:
         "yes_crt_no_cnxt": row["yes_crt_no_cnxt"],
         "yes_crt_yes_cnxt": row["yes_crt_yes_cnxt"]
     }
-    shuffled_variants = list(alt_text_variants.items())
+    shuffled_variants = list(alt_text_variants)
     random.shuffle(shuffled_variants)
     
     selected_best = st.radio("Select the best alt-text option:", 
