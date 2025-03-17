@@ -83,13 +83,11 @@ with col2:
     alt_text_labels = {variant[0]: variant[1] for variant in shuffled_variants}  # Store actual alt-text values
     
     selected_best = st.radio("Select the best alt-text option:", 
-                             format_func=lambda x: f"{x}",
-                             key="radio_options",
                              options=[alt_text_labels[key].replace("Alt-text: ", "") for key in alt_text_labels] + ["None"],
                              index=None)
     
-    reasoning = st.text_area("Explain why you selected this option or why none of the options are suitable:", height=100)
-    overall_comments = st.text_area("Any additional overall comments about this image or alt-texts:", height=100)
+    reasoning = st.text_area("If you decided none of these options are suitable, please explain why (required). Otherwise, feel free to explain why you selected this option (optional):", height=100)
+    overall_comments = st.text_area("(Optional) Any additional overall comments about this image or alt-texts:", height=100)
     
     if st.button("Next Image"):
         if selected_best == "None" and not reasoning.strip():
