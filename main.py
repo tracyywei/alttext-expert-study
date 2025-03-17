@@ -7,6 +7,7 @@ import json
 import gspread
 from google.oauth2.service_account import Credentials
 import base64
+import re
 
 st.set_page_config(layout="wide")
 
@@ -65,8 +66,8 @@ st.subheader(f"Image {st.session_state.progress + 1} of {total_images}")
 col1, spacer, col2 = st.columns([2, 0.2, 2])
 
 with col1:
-    st.write(f"**Article Title:** {row['article_title']}")
-    st.write(f"**Context:** {row['context']}")
+    st.write(f"**Article Title:** {re.sub('_', ' ', row['article_title'])}")
+    st.write(f"**Context:** {re.sub(r'\[.*?\]', '',row['context'])}")
     st.image(row["image_url"], use_container_width=True)
 
 with col2:
@@ -82,13 +83,15 @@ with col2:
     alt_text_labels = {variant[0]: variant[1] for variant in shuffled_variants}  # Store actual alt-text values
     
     selected_best = st.radio("Select the best alt-text option:", 
-                             options=[alt_text_labels[key] for key in alt_text_labels] + ["None"],
+                             options=[alt_text_labels[key].replace("Alt-text: ", "") for key in alt_text_labels] + ["None"],
                              index=None)
     
     reasoning = st.text_area("Explain why you selected this option or why none of the options are suitable:", height=100)
     overall_comments = st.text_area("Any additional overall comments about this image or alt-texts:", height=100)
     
     if st.button("Next Image"):
+        if selected_best == "None" and not reasoning.strip():
+            st.warning("You must provide an explanation if selecting 'None'.")
         if selected_best:
             selected_variant = [key for key, value in alt_text_labels.items() if value == selected_best]
             selected_variant = selected_variant[0] if selected_variant else "None"
