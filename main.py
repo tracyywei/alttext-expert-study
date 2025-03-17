@@ -86,8 +86,8 @@ with col2:
                              options=[alt_text_labels[key].replace("Alt-text: ", "") for key in alt_text_labels] + ["None"],
                              index=None)
     
-    reasoning = st.text_area("If you decided none of these options are suitable, please explain why (required). Otherwise, feel free to explain why you selected this option (optional):", height=100)
-    overall_comments = st.text_area("(Optional) Any additional overall comments about this image or alt-texts:", height=100)
+    reasoning = st.text_area("If you decided none of these options are suitable, please explain why (required). Otherwise, feel free to explain why you selected this option (optional):", height=100, key=f"reasoning_{st.session_state.progress}")
+    overall_comments = st.text_area("(Optional) Any additional overall comments about this image or alt-texts:", height=100, key=f"comments_{st.session_state.progress}")
     
     if st.button("Next Image"):
         if selected_best:
