@@ -83,6 +83,8 @@ with col2:
     alt_text_labels = {variant[0]: variant[1] for variant in shuffled_variants}  # Store actual alt-text values
     
     selected_best = st.radio("Select the best alt-text option:", 
+                             format_func=lambda x: f"{x}",
+                             key="radio_options",
                              options=[alt_text_labels[key].replace("Alt-text: ", "") for key in alt_text_labels] + ["None"],
                              index=None)
     
