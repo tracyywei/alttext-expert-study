@@ -108,6 +108,9 @@ with col2:
                     st.session_state.progress + 1,
                     st.session_state.start_time
                 ])
+
+                st.session_state[f"reasoning_{st.session_state.progress}"] = ""
+                st.session_state[f"comments_{st.session_state.progress}"] = ""
                 
                 st.session_state.progress += 1
                 st.rerun()
