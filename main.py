@@ -90,26 +90,27 @@ with col2:
     overall_comments = st.text_area("(Optional) Any additional overall comments about this image or alt-texts:", height=100)
     
     if st.button("Next Image"):
-        if selected_best == "None" and not reasoning.strip():
-            st.warning("You must provide an explanation if selecting 'None'.")
         if selected_best:
-            selected_variant = [key for key, value in alt_text_labels.items() if value == selected_best]
-            selected_variant = selected_variant[0] if selected_variant else "None"
-            
-            sheet.append_row([
-                participant_id,
-                row["image_name"],
-                selected_variant,  # Save the alt-text type
-                selected_best,  # Save the actual alt-text text
-                reasoning,
-                overall_comments,
-                time.time(),
-                st.session_state.progress + 1,
-                st.session_state.start_time
-            ])
-            
-            st.session_state.progress += 1
-            st.rerun()
+            if selected_best == "None" and not reasoning.strip():
+                st.warning("You must provide an explanation if selecting 'None'.")
+            else:
+                selected_variant = [key for key, value in alt_text_labels.items() if value == selected_best]
+                selected_variant = selected_variant[0] if selected_variant else "None"
+                
+                sheet.append_row([
+                    participant_id,
+                    row["image_name"],
+                    selected_variant,  # Save the alt-text type
+                    selected_best,  # Save the actual alt-text text
+                    reasoning,
+                    overall_comments,
+                    time.time(),
+                    st.session_state.progress + 1,
+                    st.session_state.start_time
+                ])
+                
+                st.session_state.progress += 1
+                st.rerun()
         else:
             st.warning("Please select the best alt-text or 'None' before proceeding.")
 
