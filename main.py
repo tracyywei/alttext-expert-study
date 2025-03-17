@@ -19,7 +19,7 @@ def load_data():
 data = load_data()
 
 st.title("Alt-Text Expert Evaluation Study")
-st.write("The study will take approximately one hour and involve reviewing and rating four alternative image descriptions to identify the most accurate. Participants will receive $35 as compensation for their time. Your input will directly contribute to improving an editing tool designed to help all contributors make Wikipedia more accessible for blind and low-vision users. Thank you for your time and participation!")
+st.write("The study will take approximately one hour and involve reviewing and selecting the best of four alt-text descriptions for each image. Participants will receive $35 as compensation for their time. Your input will directly contribute to improving an editing tool designed to help all contributors make Wikipedia more accessible for blind and low-vision users. Thank you for your time and participation!")
 
 # Google Sheets authentication using Streamlit Secrets
 SHEET_NAME = "expert_responses"
