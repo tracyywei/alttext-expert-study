@@ -30,8 +30,8 @@ sheet = client.open(SHEET_NAME).sheet1
 
 random.seed(42)  # Ensure reproducibility
 data_shuffled = data.sample(frac=1, random_state=42).reset_index(drop=True)
-set_1 = data_shuffled.iloc[:100]
-set_2 = data_shuffled.iloc[100:200]
+set_1 = data_shuffled.iloc[:50]
+set_2 = data_shuffled.iloc[50:100]
 
 participant_id = st.text_input("Enter Participant ID:", "")
 if not participant_id:
@@ -76,22 +76,28 @@ with col2:
         "yes_crt_no_cnxt": row["yes_crt_no_cnxt"],
         "yes_crt_yes_cnxt": row["yes_crt_yes_cnxt"]
     }
-    shuffled_variants = list(alt_text_variants)
+    shuffled_variants = list(alt_text_variants.items())
     random.shuffle(shuffled_variants)
     
+    alt_text_labels = {variant[0]: variant[1] for variant in shuffled_variants}  # Store actual alt-text values
+    
     selected_best = st.radio("Select the best alt-text option:", 
-                             options=[v[0] for v in shuffled_variants] + ["None"],
+                             options=[alt_text_labels[key] for key in alt_text_labels] + ["None"],
                              index=None)
     
-    reasoning = st.text_area("Explain why you selected this option or why none is suitable:", height=100)
+    reasoning = st.text_area("Explain why you selected this option or why none of the options are suitable:", height=100)
     overall_comments = st.text_area("Any additional overall comments about this image or alt-texts:", height=100)
     
     if st.button("Next Image"):
         if selected_best:
+            selected_variant = [key for key, value in alt_text_labels.items() if value == selected_best]
+            selected_variant = selected_variant[0] if selected_variant else "None"
+            
             sheet.append_row([
                 participant_id,
                 row["image_name"],
-                selected_best,
+                selected_variant,  # Save the alt-text type
+                selected_best,  # Save the actual alt-text text
                 reasoning,
                 overall_comments,
                 time.time(),
