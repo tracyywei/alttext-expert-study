@@ -87,8 +87,8 @@ with col2:
                              index=None,
                              key=f"radio_{st.session_state.progress}")
     
-    reasoning = st.text_area("Explain why you selected this option or why none is suitable:", height=100)
-    overall_comments = st.text_area("Any additional overall comments about this image or alt-texts:", height=100)
+    reasoning = st.text_area("If you decided none of these options are suitable, please explain why (required). Otherwise, feel free to explain why you selected this option (optional):", height=100)
+    overall_comments = st.text_area("(Optional) Any additional overall comments about this image or alt-texts:", height=100)
     
     if st.button("Next Image"):
         if selected_best:
