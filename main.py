@@ -33,14 +33,20 @@ random.seed(42)  # Ensure reproducibility
 data_shuffled = data.sample(frac=1, random_state=42).reset_index(drop=True)
 set_1 = data_shuffled.iloc[:50]
 set_2 = data_shuffled.iloc[50:100]
+set_3 = data_shuffled.iloc[100:150]
 
 participant_id = st.text_input("Enter Participant ID:", "")
 if not participant_id:
     st.warning("Please enter a participant ID to begin.")
     st.stop()
 
-participant_number = int(participant_id) if participant_id.isdigit() else random.randint(0, 1)
-selected_images = set_1 if participant_number % 2 == 0 else set_2
+participant_number = int(participant_id) if participant_id.isdigit() else random.randint(0, 2)
+if participant_number % 3 == 0:
+    selected_images = set_3 
+elif participant_number % 2 == 0:
+    selected_images = set_1
+else:
+    selected_images = set_2
 
 if "progress" not in st.session_state:
     progress_records = sheet.get_all_records()
