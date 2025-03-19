@@ -100,7 +100,7 @@ with col2:
             if selected_best == "None" and not reasoning.strip():
                 st.warning("You must provide an explanation if selecting 'None'.")
             else:
-                selected_variant = [key for key, value in alt_text_labels.items() if value == selected_best]
+                selected_variant = [key for key, value in alt_text_labels.items() if value.replace("Alt-text: ", "") == selected_best]
                 selected_variant = selected_variant[0] if selected_variant else "None"
                 
                 sheet.append_row([
