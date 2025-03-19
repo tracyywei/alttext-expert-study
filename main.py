@@ -33,7 +33,7 @@ random.seed(42)  # Ensure reproducibility
 data_shuffled = data.sample(frac=1, random_state=42).reset_index(drop=True)
 set_1 = data_shuffled.iloc[:50]
 set_2 = data_shuffled.iloc[50:100]
-set_3 = data_shuffled.iloc[100:150]
+set_3 = data_shuffled.iloc[150:200]
 
 participant_id = st.text_input("Enter Participant ID:", "")
 if not participant_id:
