@@ -55,8 +55,7 @@ if "progress" not in st.session_state:
 st.progress(st.session_state.progress / len(selected_images))
 total_images = len(selected_images)
 if st.session_state.progress >= total_images:
-    total_time_spent = time.time() - start_time
-    st.success(f"You have completed the study! Total time spent: {total_time_spent:.2f} seconds. Thank you for participating.")
+    st.success(f"You have completed the study! Thank you for participating, and please reply to the original study email to confirm your completion.")
     st.stop()
 
 row = selected_images.iloc[st.session_state.progress]
